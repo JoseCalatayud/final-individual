@@ -21,21 +21,15 @@ public class App {
         productos.put(producto3.getId(), producto3);
         Tienda tienda = new Tienda(productos);
 
-        List <Producto> listaProducto = tienda.listarProducto();
+        List <Producto> listaProducto = tienda.listarProductos();
 
-        for (Producto producto : listaProducto) {
-            System.out.println(producto.getNombre());
-        }
-        listaProducto = tienda.listarPorId(2);
-        for (Producto producto : listaProducto) {
-            System.out.println(producto.getNombre());
-        }
+       
         HashMap <Integer, Integer> productosVendidos = new HashMap<>();
         productosVendidos.put(1,20);
         productosVendidos.put(3,20);
         productosVendidos.put(2,20);
 
-        tienda.venderProductos(productosVendidos);
+       // tienda.venderProductos(productosVendidos);
         System.out.println(tienda.verStockProducto(1));
         System.out.println(tienda.verStockProducto(2));
         System.out.println(tienda.verStockProducto(3));

@@ -6,6 +6,9 @@ tienda
 -venderProductos
 -verPrecioProductos
 -verDescripcion
+-verStockProducto
+-añadirStockProducto
+-nuevoProducto
 
 
 
@@ -13,6 +16,3 @@ producto
 
 -verPrecio
 -modificarProducto
--añadirStockProducto
--nuevoProducto
--verStockProducto
