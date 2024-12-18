@@ -25,7 +25,7 @@ public class Tienda {
         return listaProductos;
     }
 
-    public Producto listarPorId(int id) {
+    public Producto listarPorId(int id) throws NullPointerException{
 
         return productos.entrySet().stream()
                 .filter((p) -> (p.getValue().getId() == id))

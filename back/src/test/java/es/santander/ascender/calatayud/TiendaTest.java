@@ -53,6 +53,8 @@ public class TiendaTest {
     void testListarPorId() {
         Producto producto = producto1;
         assertEquals(producto, tienda.listarPorId(1));
+        producto = producto3;
+        assertEquals(producto, tienda.listarPorId(3));
     }
 
     @Test
