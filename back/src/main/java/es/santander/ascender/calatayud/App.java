@@ -1,7 +1,7 @@
 package es.santander.ascender.calatayud;
 
 import java.util.HashMap;
-import java.util.List;
+
 
 /**
  * Hello world!
@@ -11,8 +11,7 @@ public class App {
        
         Producto producto1 = new Producto(1, "Camiseta", "Camiseta de algodón", 19.99f, 100);
         Producto producto2 = new Producto(2, "Zapatos", "Zapatos deportivos", 49.99f, 50);
-        Producto producto3 = new Producto(3, "Gorra", "Gorra de béisbol", 15.50f, 200);
-        
+        Producto producto3 = new Producto(3, "Gorra", "Gorra de béisbol", 15.50f, 200);        
 
         HashMap<Integer, Producto> productos=new HashMap<>();
 
@@ -21,9 +20,6 @@ public class App {
         productos.put(producto3.getId(), producto3);
         Tienda tienda = new Tienda(productos);
 
-        List <Producto> listaProducto = tienda.listarProductos();
-
-       
         HashMap <Integer, Integer> productosVendidos = new HashMap<>();
         productosVendidos.put(1,20);
         productosVendidos.put(3,20);
