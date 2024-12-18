@@ -1,0 +1,13 @@
+td.precio {
+    text-align: right;
+}
+.tdBotones{
+    text-align: center;
+}
+
+th:last-child{
+    text-align: right;
+}
+.detalle span{
+    width: 10em;
+}

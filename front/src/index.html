@@ -1,16 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script type="text/javascript" src="javascript/index.js"></script>
+    <link rel="stylesheet" href="css/style.css">
     <title>Proyecto-Final</title>
 </head>
+
 <body>
-    <h1>Hola desde Parcel</h1>
-    <button id="listar">LISTAR</button>
-    <button id="listarID">LISTAR ID</button>
-    <button id="insertar">COMPRAR</button>
+    <header></header>
+    <main>
+        <section class="maestro">
+            <h1>Lista de productos</h1>
+            <div class="tablaMaestro">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <button id="listar">LISTAR</button>
+        <button id="listarID">LISTAR ID</button>
+        <button id="insertar">AÑADIR</button>
+        <button id="borrar">Borrar</button>
+        <button id="modificar">modificar</button>
+        <button id="comprar">COMPRAR</button>
+        <section class="detalle">
+            <h1>Detalle del producto</h1>
+            <input type="text" id="id" hidden>
+            <div class="input-group mb-3">
+                <span class="input-group-text" >Producto</span>
+                <input type="text" class="form-control" id="nombreProducto" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" >Descripción</span>
+                <textarea class="form-control" id="descripcionProducto" aria-label="With textarea"></textarea>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" >Stock</span>
+                <input type="text" class="form-control" id="stockProducto" aria-label="Stock" aria-describedby="basic-addon2">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" >Precio</span>
+                <input type="text" class="form-control" id="precioProducto" aria-label="Precio producto" aria-describedby="basic-addon2">
+            </div>
+            <button type="button" class="btn btn-primary">Modificar</button>
+            <button type="button" class="btn btn-primary">Cancelar</button>
+
+        </section>
+    </main>
+    <footer></footer>
+
 </body>
+
 </html>

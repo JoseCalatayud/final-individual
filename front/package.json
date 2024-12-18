@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "server": "npx parcel src/index.html",
-    "construir":"npx parcel build ./src/javascript/index.js",
+    "construir": "npx parcel build ./src/javascript/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jose Calatayud",
   "license": "Apache-2.0",
   "dependencies": {
+    "bootstrap": "^5.3.3",
     "jquery": "^3.7.1",
     "parcel": "^2.13.3"
   }
