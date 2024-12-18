@@ -1,3 +1,16 @@
+html{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 80%;
+}
+
+header{
+    width: 80%;
+    min-width: 900px;
+}
+
+
 td.precio {
     text-align: right;
 }
@@ -10,4 +23,10 @@ th:last-child{
 }
 .detalle span{
     width: 10em;
+}
+.tablaMaestro{
+    margin: auto;
+    width: 600px;
+    height: 800px;
+    min-height: 600px;
 }

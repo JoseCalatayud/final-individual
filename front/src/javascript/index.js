@@ -122,21 +122,24 @@ $(function () {
     }
 
     function borrarProducto(id) {
-        $.ajax({
-            url: `http://localhost:1234/api/productos/${id}`,
-            type: 'DELETE',
-            success: function (data) {
-                console.log('Borrado con exito' + data)
-            },
-            error: function (error) {
-                console.log(error)
-            },
-            complete: function () {
+        if(confirm("¿Está seguro?")){
 
-                getProducts()
-            }
-
-        })
+            $.ajax({
+                url: `http://localhost:1234/api/productos/${id}`,
+                type: 'DELETE',
+                success: function (data) {
+                    console.log('Borrado con exito' + data)
+                },
+                error: function (error) {
+                    console.log(error)
+                },
+                complete: function () {
+    
+                    getProducts()
+                }
+    
+            })
+        }
     }
 
     let datos = {
