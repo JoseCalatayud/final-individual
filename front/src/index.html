@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="javascript/index.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <title>Proyecto-Final</title>
@@ -15,8 +16,8 @@
     <header></header>
     <main>
         <section class="maestro">
-            <h1>Lista de productos</h1>
             <div class="tablaMaestro">
+                <h1>Lista de productos</h1>
                 <table class="table">
                     <thead>
                         <tr>
@@ -29,62 +30,67 @@
 
                     </tbody>
                 </table>
+                <button type="button" id="refrescar" class="btn btn-primary">Refrescar</button>
+                <button type="button" id="añadir" class="btn btn-primary">Añadir</button>
             </div>
         </section>
-        <button id="listar">LISTAR</button>
-        <button id="listarID">LISTAR ID</button>
-        <button id="insertar">AÑADIR</button>
-        <button id="borrar">Borrar</button>
-        <button id="modificar">modificar</button>
-        <button id="comprar">COMPRAR</button>
+
         <section class="detalle">
             <h1>Detalle del producto</h1>
-            <input type="text" id="id" hidden>
-            <div class="input-group mb-3">
-                <span class="input-group-text" >Producto</span>
-                <input type="text" class="form-control" id="nombreProducto" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
+            <form method="post">
+                <input type="text" id="id" hidden>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Producto</span>
+                    <input type="text" class="form-control" id="nombreProducto" aria-label="nombreProducto"
+                        aria-describedby="basic-addon1">
+                </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text" >Descripción</span>
-                <textarea class="form-control" id="descripcionProducto" aria-label="With textarea"></textarea>
-            </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Descripción</span>
+                    <textarea class="form-control" id="descripcionProducto"
+                        aria-label="descripcionProducto With textarea"></textarea>
+                </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text" >Stock</span>
-                <input type="text" class="form-control" id="stockProducto" aria-label="Stock" aria-describedby="basic-addon2">
-            </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Stock</span>
+                    <input type="text" class="form-control" id="stockProducto" aria-label="Stock"
+                        aria-describedby="basic-addon2">
+                </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text" >Precio</span>
-                <input type="text" class="form-control" id="precioProducto" aria-label="Precio producto" aria-describedby="basic-addon2">
-            </div>
-            <button type="button" class="btn btn-primary">Modificar</button>
-            <button type="button" class="btn btn-primary">Cancelar</button>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Precio</span>
+                    <input type="text" class="form-control" id="precioProducto" aria-label="Precio producto"
+                        aria-describedby="basic-addon2">
+                </div>
+                <button type="button" id="botonCambios" class="btn btn-primary">Guardar</button>
+                <button type="button" id="botonCancelar" class="btn btn-primary">Cancelar</button>
+            </form>
 
         </section>
     </main>
     <footer></footer>
-    <!-- Modal de confirmación de borrado -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <!-- Modal -->
+    <div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="miModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">Confirmación de borrado</h5>
+                    <h5 class="modal-title" id="miModalLabel">Modificar Entrada</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    ¿Está seguro?
+                    <!-- Aquí va el contenido del modal -->
+                    <p>¿Deseas guardar?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="confirmDelete">Sí, borrar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" id="confirmarAccion" class="btn btn-primary">Guardar cambios</button>
                 </div>
             </div>
         </div>
     </div>
+
 
 </body>
 

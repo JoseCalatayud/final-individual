@@ -4,6 +4,7 @@ $(function () {
 
     function getProducts() {
         $('tbody').html("")
+        $('.detalle').hide();
         $.ajax({
             url: "http://localhost:1234/api/productos",
             success: function (data) {
@@ -35,9 +36,18 @@ $(function () {
                                 .attr('class', 'botonMaestro')
                                 .attr('data-id', element.id)
                                 .text('Detalle'))
+                            .off()
                             .on('click', function (event) {
                                 console.log('Hola desde boton VerDetalle')
                                 getProductsById($(event.target).attr('data-id'))
+                                $('#botonCambios').text('Modificar').on('click', function () {
+                                    $('#miModal').modal('show');
+                                    $('#confirmarAccion').off().click(function() {
+                                        guardarDatos()                                        ;
+                                        $('#miModal').modal('hide');
+                                    });
+
+                                })
                             }))
                     );
                 });
@@ -45,8 +55,8 @@ $(function () {
             error: function (error) {
                 console.log(error)
             },
-            complete: function () {
-
+            complete: function (data) {
+                console.log(data)
             }
 
         })
@@ -55,36 +65,29 @@ $(function () {
         $.ajax({
             url: `http://localhost:1234/api/productos/${id}`,
             success: function (data) {
-                $('.detalle').show()
-                $('#id').val("hola")
+
+                $('#id').val(data.id)
                 $('#nombreProducto').val(data.nombre)
                 $('#descripcionProducto').val(data.descripcion)
                 $('#stockProducto').val(data.cantidad)
-                $('#precioProducto').val(parseFloat(data.precio).toFixed(2)+' €')
-                console.log(data.nombre)
-                
+                $('#precioProducto').val(parseFloat(data.precio).toFixed(2) + ' €')
+                console.log(data.id)
+                if (data.id >= 0) {
+                    $('.detalle').show()
+                    $('#botonCambios')
+                        .text('Modificar')
+
+
+                }
+
             },
             error: function (error) {
                 console.log(error)
             },
             complete: function (data) {
-                
+
             }
 
-        })
-    }
-    function insertarProducto(datos) {
-        $.ajax({
-            url: "http://localhost:1234/api/productos",
-            type: "POST",
-            data: JSON.stringify(datos),
-            contentType: "application/json",
-            success: function (respuesta) {
-                console.log(respuesta)
-            },
-            error: (error) => {
-                console.log(error)
-            }
         })
     }
 
@@ -95,18 +98,35 @@ $(function () {
             type: "POST",
             success: function (respuesta) {
                 console.log("Producto comprado," + respuesta)
+                refrescar()
             },
             error: function (error) {
                 console.log('No tenemos stock suficiente ' + error)
             },
             complete: function () {
-                getProducts()
+
             }
         })
 
     }
+    function insertarProducto(datos) {
+        $.ajax({
+            url: "http://localhost:1234/api/productos",
+            type: "POST",
+            data: JSON.stringify(datos),
+            contentType: "application/json",
+            success: function (respuesta) {
+                console.log(respuesta)
+                refrescar()
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        })
+    }
 
     function modificarProducto(id, datos) {
+
         $.ajax({
             url: `http://localhost:1234/api/productos/${id}`,
             type: "PUT",
@@ -114,6 +134,7 @@ $(function () {
             contentType: "application/json",
             success: function (data) {
                 console.log(data)
+                refrescar()
             },
             error: function (error) {
                 console.log(error)
@@ -122,47 +143,86 @@ $(function () {
     }
 
     function borrarProducto(id) {
-        if(confirm("¿Está seguro?")){
-
+        if (confirm("¿Está seguro?")) {
             $.ajax({
                 url: `http://localhost:1234/api/productos/${id}`,
                 type: 'DELETE',
                 success: function (data) {
                     console.log('Borrado con exito' + data)
+                    refrescar()
+
                 },
                 error: function (error) {
                     console.log(error)
                 },
                 complete: function () {
-    
-                    getProducts()
                 }
-    
+
             })
         }
     }
+    function guardarDatos() {
+        
+            console.log('estoy en guardar')
+            let id = $('#id').val();
+            let nombre = $('#nombreProducto').val()
+            let descripcion = $('#descripcionProducto').val();
+            let cantidad = $('#stockProducto').val();
+            let precio = ($('#precioProducto').val()).replace(/\s?€/g, '');
+            let datos = {
+                "id": id,
+                "nombre": nombre,
+                "descripcion": descripcion,
+                "cantidad": cantidad,
+                "precio": precio
+            }
+            if (datos.id != 0) {
+                limpiarDetalle()
+                modificarProducto(id, datos)
 
-    let datos = {
-        "id": 0,
-        "nombre": "Jose",
-        "descripcion": "Hombre",
-        "cantidad": 45,
-        "precio": 19.99
+            } else {
+                limpiarDetalle()
+                insertarProducto(datos);
+            }
+
+        
     }
-    let datos1 = {
-        "id": 8,
-        "nombre": "pablo",
-        "descripcion": "familia perez",
-        "cantidad": 45,
-        "precio": 19.99
+
+    function limpiarDetalle() {
+        $('.detalle').hide();
+        $('#id').val(0);
+        $('#nombreProducto').val('')
+        $('#descripcionProducto').val('');
+        $('#stockProducto').val('');
+        $('#precioProducto').val('');
     }
-    $('#listar').on('click', () => { getProducts() })
-    $('#listarID').on('click', () => { getProductsById(1) })
-    $('#insertar').on('click', () => { insertarProducto(datos) })
-    $('#borrar').on('click', () => { borrarProducto(11) })
-    $('#modificar').on('click', () => modificarProducto(8, datos1))
-    $('#comprar').on('click', () => comprarProducto(2))
+
     $('.detalle').hide();
     getProducts()
+
+    function refrescar() {
+        $('.detalle').hide();
+        $('#botonCambios').off()
+        getProducts()
+    }
+
+    $('#refrescar').on('click', function () {
+        refrescar()
+    })
+
+    $('#añadir').on('click', function () {
+        limpiarDetalle();
+
+        $('.detalle').show()
+        $('#botonCambios').text('Crear Producto').off().on('click', function () {
+            guardarDatos()
+        })
+
+    })
+
+    $('#botonCancelar').on('click', function () {
+        refrescar()
+    })
+    
 
 })
