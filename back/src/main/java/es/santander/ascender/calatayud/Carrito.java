@@ -1,55 +1,50 @@
 package es.santander.ascender.calatayud;
 
+import java.util.HashMap;
+
 public class Carrito {
+
     private int id;
-    private int idProducto;
-    private int cantidad;
+    private HashMap<Integer, Integer> contenido;
 
-
-    public Carrito() {
-
-    }
-
-
-    public Carrito(int id, int idProducto, int cantidad) {
+    public Carrito (int id) {
         this.id = id;
-        this.idProducto = idProducto;
-        this.cantidad = cantidad;
-    }
+        this.contenido = new HashMap<>();
 
+
+    }
+    public void setContenido(HashMap<Integer, Integer> contenido) {
+        this.contenido = contenido;
+    }
 
     public int getId() {
         return id;
     }
 
-
     public void setId(int id) {
         this.id = id;
     }
 
-
-    public int getIdProducto() {
-        return idProducto;
-    }
-
-
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-    }
-
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public HashMap<Integer, Integer> getContenido() {
+        return contenido;
     }
 
     
 
+    public void añadirProducto(int idProducto, int cantidad) {
+        if (contenido.containsKey(idProducto)) {
+            contenido.put(idProducto, contenido.get(idProducto) + cantidad);
+        } else {
+            contenido.put(idProducto, cantidad);
+        }
+    }
+
+    public void vaciarCarrito() {
+        contenido.clear();
+    }
     
 
     
+
+   
 }

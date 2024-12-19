@@ -3,7 +3,7 @@ $(function () {
 
 
     function getProducts() {
-        $('tbody').html("")
+        $('tbody').empty();
         $('.detalle').hide();
         $.ajax({
             url: "http://localhost:1234/api/productos",
@@ -19,7 +19,9 @@ $(function () {
                                 .attr('data-id', element.id)
                                 .text('Borrar'))
                             .on('click', function (event) {
-                                borrarProducto($(event.target).attr('data-id'))
+                                mostrarModalConfirmacion('Borrar producto', 'Confirmar borrado', () => {
+                                    borrarProducto($(event.target).attr('data-id'));
+                                })
                                 console.log('Hola desde botonBorrar')
                             }))
                         .append($('<td>').attr('class', 'tdBotones')
@@ -28,8 +30,10 @@ $(function () {
                                 .attr('data-id', element.id)
                                 .text('Comprar'))
                             .on('click', function (event) {
-                                comprarProducto($(event.target).attr('data-id'))
-                                console.log('Hola desde boton comprar')
+                                mostrarModalConfirmacion('Comprar producto', 'Confirmar compra', () => {
+                                    comprarProducto($(event.target).attr('data-id'));
+                                })
+
                             }))
                         .append($('<td>').attr('class', 'tdBotones')
                             .append($('<button>')
@@ -39,14 +43,16 @@ $(function () {
                             .off()
                             .on('click', function (event) {
                                 console.log('Hola desde boton VerDetalle')
-                                getProductsById($(event.target).attr('data-id'))
+                                verDetalleProducto($(event.target).attr('data-id'))
                                 $('#tituloDetalle').text('Detalles del producto')
                                 $('#botonCambios').text('Modificar').off().on('click', function () {
-                                    $('#miModal').modal('show');
-                                    $('#confirmarAccion').off().click(function() {
-                                        guardarDatos()                                        ;
-                                        $('#miModal').modal('hide');
-                                    });
+                                    if (verificarCampos()) {
+                                        mostrarModalConfirmacion('Modificar producto', '¿Modificar producto?', () => {
+                                            guardarDatos();
+                                        })
+
+
+                                    }
 
                                 })
                             }))
@@ -54,19 +60,17 @@ $(function () {
                 });
             },
             error: function (error) {
+                mostrarError("Error al listar los productos")
                 console.log(error)
             },
-            complete: function (data) {
-                console.log(data)
-            }
+
 
         })
     }
-    function getProductsById(id) {
+    function verDetalleProducto(id) {
         $.ajax({
             url: `http://localhost:1234/api/productos/${id}`,
             success: function (data) {
-
                 $('#id').val(data.id)
                 $('#nombreProducto').val(data.nombre)
                 $('#descripcionProducto').val(data.descripcion)
@@ -77,18 +81,12 @@ $(function () {
                     $('.detalle').show()
                     $('#botonCambios')
                         .text('Modificar')
-
-
                 }
-
             },
             error: function (error) {
+                mostrarError("Error al recuperar los datos");
                 console.log(error)
             },
-            complete: function (data) {
-
-            }
-
         })
     }
 
@@ -98,15 +96,12 @@ $(function () {
             url: `http://localhost:1234/api/productos/${id}/compra`,
             type: "POST",
             success: function (respuesta) {
-                console.log("Producto comprado," + respuesta)
                 refrescar()
             },
             error: function (error) {
-                console.log('No tenemos stock suficiente ' + error)
+                mostrarError("Stock insuficiente")
             },
-            complete: function () {
-
-            }
+            
         })
 
     }
@@ -121,7 +116,7 @@ $(function () {
                 refrescar()
             },
             error: (error) => {
-                console.log(error)
+                mostrarError('Fallo al guardar el producto')
             }
         })
     }
@@ -134,59 +129,56 @@ $(function () {
             data: JSON.stringify(datos),
             contentType: "application/json",
             success: function (data) {
-                console.log(data)
                 refrescar()
             },
             error: function (error) {
+                mostrarError('Fallo al modificar el producto')
                 console.log(error)
             }
         })
     }
 
     function borrarProducto(id) {
-        if (confirm("¿Está seguro?")) {
-            $.ajax({
-                url: `http://localhost:1234/api/productos/${id}`,
-                type: 'DELETE',
-                success: function (data) {
-                    console.log('Borrado con exito' + data)
-                    refrescar()
+        $.ajax({
+            url: `http://localhost:1234/api/productos/${id}`,
+            type: 'DELETE',
+            success: function (data) {                
+                refrescar()
 
-                },
-                error: function (error) {
-                    console.log(error)
-                },
-                complete: function () {
-                }
+            },
+            error: function (error) {
+                mostrarError("Fallo al eliminar el producto")
+                console.log(error)
+            },
+           
+        })
 
-            })
-        }
     }
     function guardarDatos() {
-        
-            console.log('estoy en guardar')
-            let id = $('#id').val();
-            let nombre = $('#nombreProducto').val()
-            let descripcion = $('#descripcionProducto').val();
-            let cantidad = $('#stockProducto').val();
-            let precio = ($('#precioProducto').val()).replace(/\s?€/g, '');
-            let datos = {
-                "id": id,
-                "nombre": nombre,
-                "descripcion": descripcion,
-                "cantidad": cantidad,
-                "precio": precio
-            }
-            if (datos.id != 0) {
-                limpiarDetalle()
-                modificarProducto(id, datos)
 
-            } else {
-                limpiarDetalle()
-                insertarProducto(datos);
-            }
+        console.log('estoy en guardar')
+        let id = $('#id').val();
+        let nombre = $('#nombreProducto').val()
+        let descripcion = $('#descripcionProducto').val();
+        let cantidad = $('#stockProducto').val();
+        let precio = ($('#precioProducto').val()).replace(/\s?€/g, '');
+        let datos = {
+            "id": id,
+            "nombre": nombre,
+            "descripcion": descripcion,
+            "cantidad": cantidad,
+            "precio": precio
+        }
+        if (datos.id != 0) {
+            limpiarDetalle()
+            modificarProducto(id, datos)
 
-        
+        } else {
+            limpiarDetalle()
+            insertarProducto(datos);
+        }
+
+
     }
 
     function limpiarDetalle() {
@@ -198,8 +190,7 @@ $(function () {
         $('#precioProducto').val('');
     }
 
-    $('.detalle').hide();
-    getProducts()
+
 
     function refrescar() {
         $('.detalle').hide();
@@ -207,23 +198,80 @@ $(function () {
         getProducts()
     }
 
-    $('#refrescar').on('click', function () {
+    function mostrarModalConfirmacion(titulo, mensaje, callback) {
+        $('#miModalLabel').text(titulo);
+        $('#preguntaModal').text(mensaje);
+        $('#miModal').modal('show');
+        $('#confirmarAccion').off().click(function () {
+            callback();
+            $('#miModal').modal('hide');
+        });
+    }
+
+
+
+
+    function verificarCampos() {
+        let id = $('#id').val();
+        let nombre = $('#nombreProducto').val().trim();
+        let descripcion = $('#descripcionProducto').val().trim();
+        let cantidad = $('#stockProducto').val().trim();
+        let precio = $('#precioProducto').val().trim().replace(/\s?€/g, '');
+
+        if (!nombre) {
+            mostrarError("El nombre del producto es obligatorio.");
+            return false;
+        }
+
+        if (!descripcion) {
+            mostrarError("La descripción del producto es obligatoria.");
+            return false;
+        }
+
+        if (!cantidad || isNaN(cantidad) || parseInt(cantidad) < 0) {
+            mostrarError("La cantidad debe ser un número válido y no negativo.");
+            return false;
+        }
+
+        if (!precio || isNaN(precio) || parseFloat(precio) < 0) {
+            mostrarError("El precio debe ser un número válido y no negativo.");
+            return false;
+        }
+
+        return true;
+    }
+    function mostrarError(mensaje) {
+        $('#preguntaModalValidar').text(mensaje);
+        $('#miModalValidar').modal('show');
+    }
+
+    $('#botonCancelar').on('click', function () {
         refrescar()
     })
-
     $('#añadir').on('click', function () {
         limpiarDetalle();
         $('#tituloDetalle').text('Datos del nuevo producto')
         $('.detalle').show()
         $('#botonCambios').text('Crear Producto').off().on('click', function () {
-            guardarDatos()
+            if (verificarCampos()) {
+                $('#miModalLabel').text('Añadir producto')
+                $('#preguntaModal').text('¿Seguro que quieres añadir?')
+                $('#miModal').modal('show');
+                $('#confirmarAccion').off().click(function () {
+                    guardarDatos();
+                    $('#miModal').modal('hide');
+                });
+
+            }
+
         })
 
-    })
 
-    $('#botonCancelar').on('click', function () {
+    })
+    $('#refrescar').on('click', function () {
         refrescar()
     })
-    
+    $('.detalle').hide();
+    getProducts()
 
 })

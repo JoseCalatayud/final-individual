@@ -1,5 +1,6 @@
 package es.santander.ascender.calatayud;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,18 +8,21 @@ import java.util.stream.Collectors;
 public class Tienda {
 
     private HashMap<Integer, Producto> productos;
-    private HashMap<Integer, Integer> carrito;
+    private List <Carrito> carritos;
 
-    public Tienda() {
-    }
+    
 
     public Tienda(HashMap<Integer, Producto> productos) {
         this.productos = productos;
-        this.carrito = new HashMap<>();
+        this.carritos = new ArrayList<>();
 
     }
 
-    public List<Producto> listarProductos() throws NullPointerException {
+    public void crearCarrito(int id) {
+        carritos.add(new Carrito(id));
+    }
+
+    public List<Producto> listarProductos()  {
         List<Producto> listaProductos = productos.entrySet().stream()
                 .map((p) -> p.getValue())
                 .collect(Collectors.toList());
@@ -53,49 +57,49 @@ public class Tienda {
         return stock;
     }
 
-    public void venderProductos() throws NullPointerException {
-        for (Integer producto : this.carrito.values()) {
+    public void venderProductos(int idCarrito) throws NullPointerException {
+        for (Integer producto : carritos.get(idCarrito).getContenido().keySet()) {
             if (productos.get(producto).getCantidad() == 0) {
                 System.out.println("Sin stock");
             }
         }
-        this.carrito.clear();
+        this.carritos.get(idCarrito).vaciarCarrito();;
     }
 
     public HashMap<Integer, Producto> getProductos() {
         return productos;
     }
 
-    public void llenarCarrito(int cantidad, int idProducto) {
+    public void llenarCarrito(int idCarrito, int cantidad, int idProducto) {
         if (verStockProducto(idProducto) < cantidad) {
             System.out.println(
                     "Cantidad insuficiente. Como maximo puede coger " + verStockProducto(idProducto) + " unidades");
         } else {
-            carrito.put(cantidad, idProducto);
+            carritos.get(idCarrito).añadirProducto(idProducto, cantidad);
             productos.get(idProducto).setCantidad(verStockProducto(idProducto) - cantidad);
         }
 
     }
 
-    public void vaciarCarrito() {
+    public void vaciarCarrito(int idCarrito) {
 
-        carrito.entrySet().stream()
+        carritos.get(idCarrito).getContenido().entrySet().stream()
                 .forEach(entry -> {
-                    añadirStock(entry.getValue(), entry.getKey());
+                    añadirStock(entry.getKey(), entry.getValue());
                 });
-        carrito.clear();
+                carritos.get(idCarrito).vaciarCarrito();;
     }
 
-    public float calcularPrecioCompra() {
+    public float calcularPrecioCompra(int idCarrito) {
 
-        return this.carrito.entrySet().stream()
-                .map(entry -> (productos.get(entry.getValue()).getPrecio()) * entry.getKey())
+        return this.carritos.get(idCarrito).getContenido().entrySet().stream()
+                .map(entry -> (productos.get(entry.getKey()).getPrecio()) * entry.getValue())
                 .reduce(0f, (a, b) -> a + b);
 
     }
 
-    public HashMap<Integer, Integer> getCarrito() {
-        return carrito;
+    public Carrito getCarrito(int idCarrito) {
+        return carritos.get(idCarrito);
     }
 
 }
