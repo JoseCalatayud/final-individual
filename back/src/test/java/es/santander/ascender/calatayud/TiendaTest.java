@@ -2,6 +2,7 @@ package es.santander.ascender.calatayud;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -44,19 +45,20 @@ public class TiendaTest {
     }
 
     @Test
-    void testAñadirStock() {
+    void testAñadirStock() throws Exception {
         int cantidadAnterior = producto1.getCantidad();
         int cantidadNueva = cantidadAnterior + 50;
         tienda.añadirStock(1, 50);
         assertTrue(cantidadNueva == producto1.getCantidad());
+        
     }
-
     @Test
-    void testListarPorId() {
+    void testListarPorId() throws Exception {
         Producto producto = producto1;
         assertEquals(producto, tienda.listarPorId(1));
         producto = producto3;
         assertEquals(producto, tienda.listarPorId(3));
+        
     }
 
     @Test
@@ -76,7 +78,7 @@ public class TiendaTest {
     }
 
     @Test
-    void TestLlenarCarrito() {
+    void TestLlenarCarrito() throws Exception {
         tienda.llenarCarrito(0,30, producto1.getId());
         assertTrue(producto1.getCantidad() == (100 - 30));
         tienda.llenarCarrito(0,1000, producto2.getId());
@@ -86,7 +88,7 @@ public class TiendaTest {
     }
 
     @Test
-    void TestVaciarCarrito() {
+    void TestVaciarCarrito() throws Exception {
         tienda.llenarCarrito(0,30, producto1.getId());
         tienda.llenarCarrito(0,1000, producto2.getId());
         assertTrue(producto1.getCantidad() == (100 - 30));
@@ -98,7 +100,7 @@ public class TiendaTest {
     }
 
     @Test
-    void testVenderProductos() {
+    void testVenderProductos() throws Exception {
         tienda.llenarCarrito(1,20, 1);
         tienda.llenarCarrito(1,49, 2);
         tienda.venderProductos(1);
@@ -108,12 +110,12 @@ public class TiendaTest {
     }
 
     @Test
-    void testVerStockProducto() {
+    void testVerStockProducto() throws Exception {
         assertTrue(tienda.verStockProducto(1) == 100);
     }
 
     @Test
-    void TestCalcularPrecioCompra() {
+    void TestCalcularPrecioCompra() throws Exception {
         tienda.llenarCarrito(0,20, 1);
         tienda.llenarCarrito(0,49, 2);
         assertEquals((producto1.getPrecio()*20)+(producto2.getPrecio()*49),tienda.calcularPrecioCompra(0));
