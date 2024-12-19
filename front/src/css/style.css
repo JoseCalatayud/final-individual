@@ -21,8 +21,9 @@ td.precio {
 th:last-child{
     text-align: right;
 }
-.detalle span{
-    width: 10em;
+.detalle {
+    width: 600px;
+    margin: auto;
 }
 .tablaMaestro{
     margin: auto;

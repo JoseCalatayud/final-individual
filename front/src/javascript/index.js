@@ -40,7 +40,8 @@ $(function () {
                             .on('click', function (event) {
                                 console.log('Hola desde boton VerDetalle')
                                 getProductsById($(event.target).attr('data-id'))
-                                $('#botonCambios').text('Modificar').on('click', function () {
+                                $('#tituloDetalle').text('Detalles del producto')
+                                $('#botonCambios').text('Modificar').off().on('click', function () {
                                     $('#miModal').modal('show');
                                     $('#confirmarAccion').off().click(function() {
                                         guardarDatos()                                        ;
@@ -212,7 +213,7 @@ $(function () {
 
     $('#añadir').on('click', function () {
         limpiarDetalle();
-
+        $('#tituloDetalle').text('Datos del nuevo producto')
         $('.detalle').show()
         $('#botonCambios').text('Crear Producto').off().on('click', function () {
             guardarDatos()
