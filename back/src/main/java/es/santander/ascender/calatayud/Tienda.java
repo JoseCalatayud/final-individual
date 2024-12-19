@@ -28,13 +28,13 @@ public class Tienda {
         return listaProductos;
     }
 
-    public Producto listarPorId(int id) throws Exception {
+    public Producto listarPorId(int id) {
 
         return productos.entrySet().stream()
                 .filter((p) -> (p.getValue().getId() == id))
                 .map((p) -> p.getValue())
                 .findFirst()
-                .orElseThrow(() -> new Exception("Producto con ID " + id + " no encontrado."));
+                .orElse(null);
 
     }
 
@@ -42,7 +42,7 @@ public class Tienda {
         productos.put(producto.getId(), producto);
     }
 
-    public void añadirStock(int id, int cantidad) throws Exception  {
+    public void añadirStock(int id, int cantidad)  {
         
         if (productos.containsKey(id)) {
             productos.get(id).setCantidad(verStockProducto(id) + cantidad);
@@ -52,18 +52,13 @@ public class Tienda {
 
     }
 
-    public int verStockProducto(int id) throws Exception {
-        if (!productos.containsKey(id) || productos.isEmpty()||productos.get(id)==null) {
-            throw new Exception("Producto con ID " + id + " no encontrado.");
-        }
+    public int verStockProducto(int id) {        
         int stock = productos.get(id).getCantidad();
         return stock;
     }
 
-    public void venderProductos(int idCarrito) throws Exception {
-        if (carritos.get(idCarrito).getContenido().isEmpty()) {
-            throw new Exception("El carrito esta vacio");
-        }
+    public void venderProductos(int idCarrito) {
+        
         for (Integer producto : carritos.get(idCarrito).getContenido().keySet()) {
             if (productos.get(producto).getCantidad() == 0) {
                 System.out.println("Sin stock");
@@ -77,7 +72,7 @@ public class Tienda {
         return productos;
     }
 
-    public void llenarCarrito(int idCarrito, int cantidad, int idProducto) throws Exception {
+    public void llenarCarrito(int idCarrito, int cantidad, int idProducto)  {
         if (verStockProducto(idProducto) < cantidad) {
             System.out.println(
                     "Cantidad insuficiente. Como maximo puede coger " + verStockProducto(idProducto) + " unidades");
@@ -88,11 +83,7 @@ public class Tienda {
 
     }
 
-    public void vaciarCarrito(int idCarrito) throws Exception {
-        if (carritos.get(idCarrito) == null || carritos.get(idCarrito).getContenido().isEmpty()) {
-            throw new Exception("El carrito esta no exite");
-
-        }
+    public void vaciarCarrito(int idCarrito)  {             
         carritos.get(idCarrito).getContenido().entrySet().stream()
                 .forEach(entry -> {
                     try {
@@ -105,21 +96,15 @@ public class Tienda {
         
     }
 
-    public float calcularPrecioCompra(int idCarrito) throws Exception {
-        if (carritos.get(idCarrito) == null) {
-            throw new Exception("El carrito no existe");
-            
-        }
+    public float calcularPrecioCompra(int idCarrito) {
+       
         return carritos.get(idCarrito).getContenido().entrySet().stream()
                 .map(entry -> (productos.get(entry.getKey()).getPrecio()) * entry.getValue())
                 .reduce(0f, (a, b) -> a + b);
 
     }
 
-    public Carrito getCarrito(int idCarrito) throws Exception {
-        if (carritos.get(idCarrito) == null) {
-            throw new Exception("El carrito no existe");
-        }
+    public Carrito getCarrito(int idCarrito)  {
         return carritos.get(idCarrito);
     }
 

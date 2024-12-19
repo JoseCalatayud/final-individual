@@ -45,15 +45,16 @@ public class TiendaTest {
     }
 
     @Test
-    void testAñadirStock() throws Exception {
+    void testAñadirStock()  {
         int cantidadAnterior = producto1.getCantidad();
         int cantidadNueva = cantidadAnterior + 50;
         tienda.añadirStock(1, 50);
         assertTrue(cantidadNueva == producto1.getCantidad());
         
+        
     }
     @Test
-    void testListarPorId() throws Exception {
+    void testListarPorId()  {
         Producto producto = producto1;
         assertEquals(producto, tienda.listarPorId(1));
         producto = producto3;
@@ -63,7 +64,7 @@ public class TiendaTest {
 
     @Test
     void testListarProductos() {
-        try {
+        
             List<Producto> listaEjemplo = new ArrayList<>();
             listaEjemplo.add(producto1);
             listaEjemplo.add(producto2);
@@ -72,13 +73,11 @@ public class TiendaTest {
             assertTrue(tienda.listarProductos().containsAll(listaEjemplo));
             assertFalse(tienda.listarProductos().contains(producto4));
             
-        } catch (Exception e) {
-            
-        }
+        
     }
 
     @Test
-    void TestLlenarCarrito() throws Exception {
+    void TestLlenarCarrito()  {
         tienda.llenarCarrito(0,30, producto1.getId());
         assertTrue(producto1.getCantidad() == (100 - 30));
         tienda.llenarCarrito(0,1000, producto2.getId());
@@ -88,7 +87,7 @@ public class TiendaTest {
     }
 
     @Test
-    void TestVaciarCarrito() throws Exception {
+    void TestVaciarCarrito()  {
         tienda.llenarCarrito(0,30, producto1.getId());
         tienda.llenarCarrito(0,1000, producto2.getId());
         assertTrue(producto1.getCantidad() == (100 - 30));
@@ -100,7 +99,7 @@ public class TiendaTest {
     }
 
     @Test
-    void testVenderProductos() throws Exception {
+    void testVenderProductos() {
         tienda.llenarCarrito(1,20, 1);
         tienda.llenarCarrito(1,49, 2);
         tienda.venderProductos(1);
@@ -110,12 +109,12 @@ public class TiendaTest {
     }
 
     @Test
-    void testVerStockProducto() throws Exception {
+    void testVerStockProducto() {
         assertTrue(tienda.verStockProducto(1) == 100);
     }
 
     @Test
-    void TestCalcularPrecioCompra() throws Exception {
+    void TestCalcularPrecioCompra() {
         tienda.llenarCarrito(0,20, 1);
         tienda.llenarCarrito(0,49, 2);
         assertEquals((producto1.getPrecio()*20)+(producto2.getPrecio()*49),tienda.calcularPrecioCompra(0));
