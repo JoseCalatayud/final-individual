@@ -17,27 +17,30 @@
     <main>
         <section class="maestro">
             <div class="tablaMaestro">
-                <h1>Lista de productos</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Stock</th>
-                            <th scope="col">Precio</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-
-                    </tbody>
-                </table>
-                <button type="button" id="refrescar" class="btn btn-primary">Refrescar</button>
-                <button type="button" id="añadir" class="btn btn-primary">Añadir</button>
+                <div class="tabla">
+                    <h1>Lista de productos</h1>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="botones">
+                    <button type="button" id="refrescar" class="btn btn-primary">Refrescar</button>
+                    <button type="button" id="añadir" class="btn btn-primary">Añadir</button>
+                </div>
             </div>
         </section>
 
-        <section class="detalle">
+        <section class="zonaDetalle">
             <h1 id="tituloDetalle">Detalle del producto</h1>
-            <form method="post">
+            
                 <input type="text" id="id" hidden>
                 <div class="input-group mb-3">
                     <span class="input-group-text">Producto</span>
@@ -64,7 +67,7 @@
                 </div>
                 <button type="button" id="botonCambios" class="btn btn-primary">Guardar</button>
                 <button type="button" id="botonCancelar" class="btn btn-primary">Cancelar</button>
-            </form>
+            
 
         </section>
     </main>
@@ -74,13 +77,13 @@
 
 
     <!-- Modal modificar, guardar, borrar -->
-    <div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="miModalLabel" aria-hidden="true">
+    <div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="miModalLabel" aria-hidden="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="miModalLabel">Modificar Entrada</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="false">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -94,13 +97,13 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="miModalValidar" tabindex="-1" role="dialog" aria-labelledby="miModalLabel" aria-hidden="true">
+    <div class="modal fade" id="miModalValidar" tabindex="-1" role="dialog" aria-labelledby="miModalValidarLabel" aria-hidden="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="miModalValidarLabel">Error en los datos</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="false">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">

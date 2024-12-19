@@ -1,33 +1,85 @@
-html{
-    margin:auto;
+html {
+    margin: auto;
     padding: 0;
     box-sizing: border-box;
     width: 80%;
+    background-color: rgb(69, 70, 74);
+    
 }
 
-header{
-    width: 80%;
-    min-width: 900px;
-}
+header {}
 
 
 td.precio {
     text-align: right;
 }
-.tdBotones{
+
+.tdBotones {
     text-align: center;
 }
 
-th:last-child{
+th:last-child {
     text-align: right;
 }
-.detalle {
-    width: 600px;
+.imagen{
+    object-fit: contain;
+    width: 50%;
     margin: auto;
 }
-.tablaMaestro{
+img{
+    margin-top: 1em;
+    width: 100%;
+    z-index: -1;
+}
+.botones{
+    justify-items: end;
+    
+    
+}
+.tablaMaestro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.zonaDetalle {
+    
+    box-shadow: 2px 3px 3px 2px;
+    background-color: aliceblue;
+    border-radius: 20px;
+    border: 1px solid grey;
+    padding: 4em 2em;
     margin: auto;
-    width: 600px;
-    height: 800px;
+    width: 80%;
+    min-width: 800px;
+    min-height: 400px;
+
+}
+main{
+    background-color: rgb(69, 70, 74);
+}
+section {
+    margin-top: 2em;
+    margin-bottom: 4em;
+}
+section.zonaDetalle{
+    margin-bottom: 2em;
+}
+section.maestro {
+    
+    background-color: rgb(69, 70, 74);
+    
+    
+}
+
+.tablaMaestro {
+    box-shadow: 2px 3px 3px 2px;
+    background-color: aliceblue;
+    border-radius: 20px;
+    border: 1px solid grey;
+    padding: 4em 2em;
+    margin: auto;
+    width: 80%;
+    min-width: 800px;
     min-height: 600px;
+    z-index: 1;
 }

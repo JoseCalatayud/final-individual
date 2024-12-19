@@ -4,7 +4,7 @@ $(function () {
 
     function getProducts() {
         $('tbody').empty();
-        $('.detalle').hide();
+        $('zonaDetalle').hide();
         $.ajax({
             url: "http://localhost:1234/api/productos",
             success: function (data) {
@@ -15,58 +15,72 @@ $(function () {
                         .append($('<td>').attr('class', 'precio').text(parseFloat(element.precio).toFixed(2) + " €"))
                         .append($('<td>').attr('class', 'tdBotones')
                             .append($('<button>')
-                                .attr('class', 'botonMaestro')
+                                .addClass('btn btn-dark btn-sm botonMaestro borrar')
                                 .attr('data-id', element.id)
                                 .text('Borrar'))
-                            .on('click', function (event) {
-                                mostrarModalConfirmacion('Borrar producto', 'Confirmar borrado', () => {
-                                    borrarProducto($(event.target).attr('data-id'));
-                                })
-                                console.log('Hola desde botonBorrar')
-                            }))
+                            .off()
+                        )
                         .append($('<td>').attr('class', 'tdBotones')
                             .append($('<button>')
-                                .attr('class', 'botonMaestro')
+                                .addClass('btn btn-dark btn-sm botonMaestro comprar')
                                 .attr('data-id', element.id)
                                 .text('Comprar'))
-                            .on('click', function (event) {
-                                mostrarModalConfirmacion('Comprar producto', 'Confirmar compra', () => {
-                                    comprarProducto($(event.target).attr('data-id'));
-                                })
-
-                            }))
+                                
+                        )
                         .append($('<td>').attr('class', 'tdBotones')
                             .append($('<button>')
-                                .attr('class', 'botonMaestro')
+                                .addClass('btn btn-dark btn-sm botonMaestro detalle')
                                 .attr('data-id', element.id)
                                 .text('Detalle'))
-                            .off()
-                            .on('click', function (event) {
-                                console.log('Hola desde boton VerDetalle')
-                                verDetalleProducto($(event.target).attr('data-id'))
-                                $('#tituloDetalle').text('Detalles del producto')
-                                $('#botonCambios').text('Modificar').off().on('click', function () {
-                                    if (verificarCampos()) {
-                                        mostrarModalConfirmacion('Modificar producto', '¿Modificar producto?', () => {
-                                            guardarDatos();
-                                        })
-
-
-                                    }
-
-                                })
-                            }))
+                        )
                     );
+                    
                 });
             },
             error: function (error) {
                 mostrarError("Error al listar los productos")
                 console.log(error)
             },
+            complete: function (data) {
+                $('tbody').on('click', '.botonMaestro.borrar', function (event) {
+                    
+                    event.stopPropagation();
+                    var id = $(this).data('id');
+                    mostrarModalConfirmacion('Borrar producto', 'Confirmar borrado', () => {
+                        borrarProducto(id);
+                    });
+                    console.log('Hola desde botonBorrar');
+                });
+
+                $('tbody').on('click', '.botonMaestro.comprar', function (event) {
+                    
+                    event.stopPropagation();
+                    var id = $(this).data('id');
+                    mostrarModalConfirmacion('Comprar producto', 'Confirmar compra', () => {
+                        comprarProducto(id);
+                    });
+                });
+                $('tbody').on('click', '.botonMaestro.detalle', function (event) {
+                    
+                    event.stopPropagation();
+                    var id = $(this).data('id');
+                    console.log('Hola desde boton VerDetalle');
+                    verDetalleProducto(id);
+                    $('#tituloDetalle').text('Detalles del producto');
+                    $('#botonCambios').text('Modificar').off().on('click', function () {
+                        if (verificarCampos()) {
+                            mostrarModalConfirmacion('Modificar producto', '¿Modificar producto?', () => {
+                                guardarDatos();
+                            });
+                        }
+                    });
+                });
+            }
 
 
         })
     }
+    
     function verDetalleProducto(id) {
         $.ajax({
             url: `http://localhost:1234/api/productos/${id}`,
@@ -78,7 +92,7 @@ $(function () {
                 $('#precioProducto').val(parseFloat(data.precio).toFixed(2) + ' €')
                 console.log(data.id)
                 if (data.id >= 0) {
-                    $('.detalle').show()
+                    mostrarDetalle();
                     $('#botonCambios')
                         .text('Modificar')
                 }
@@ -99,9 +113,9 @@ $(function () {
                 refrescar()
             },
             error: function (error) {
-                mostrarError("Stock insuficiente")
+                mostrarError(error.responseText)
             },
-            
+
         })
 
     }
@@ -142,7 +156,7 @@ $(function () {
         $.ajax({
             url: `http://localhost:1234/api/productos/${id}`,
             type: 'DELETE',
-            success: function (data) {                
+            success: function (data) {
                 refrescar()
 
             },
@@ -150,7 +164,7 @@ $(function () {
                 mostrarError("Fallo al eliminar el producto")
                 console.log(error)
             },
-           
+
         })
 
     }
@@ -182,7 +196,7 @@ $(function () {
     }
 
     function limpiarDetalle() {
-        $('.detalle').hide();
+        $('.zonaDetalle').hide();
         $('#id').val(0);
         $('#nombreProducto').val('')
         $('#descripcionProducto').val('');
@@ -193,7 +207,7 @@ $(function () {
 
 
     function refrescar() {
-        $('.detalle').hide();
+        $('.zonaDetalle').hide();
         $('#botonCambios').off()
         getProducts()
     }
@@ -245,13 +259,19 @@ $(function () {
         $('#miModalValidar').modal('show');
     }
 
+    function mostrarDetalle (){
+        $('.zonaDetalle').show();
+        $('button.botonMaestro').prop('disabled', true);
+    }
+    getProducts()
+    
     $('#botonCancelar').on('click', function () {
         refrescar()
     })
     $('#añadir').on('click', function () {
         limpiarDetalle();
         $('#tituloDetalle').text('Datos del nuevo producto')
-        $('.detalle').show()
+        mostrarDetalle();
         $('#botonCambios').text('Crear Producto').off().on('click', function () {
             if (verificarCampos()) {
                 $('#miModalLabel').text('Añadir producto')
@@ -263,15 +283,14 @@ $(function () {
                 });
 
             }
-
+            
         })
-
-
+        
+        
     })
     $('#refrescar').on('click', function () {
         refrescar()
     })
-    $('.detalle').hide();
-    getProducts()
-
+    $('.zonaDetalle').hide();
+    
 })
