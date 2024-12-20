@@ -18,6 +18,9 @@ public class TiendaTest {
     private Producto producto2;
     private Producto producto3;
     private Producto producto4;
+    private Carrito carrito1;
+    private Carrito carrito2;
+    private Carrito carrito3;
 
     @BeforeEach
     void setUp() {
@@ -26,14 +29,18 @@ public class TiendaTest {
         producto2 = new Producto(2, "Zapatos", "Zapatos deportivos", 49.99f, 50);
         producto3 = new Producto(3, "Gorra", "Gorra de béisbol", 15.50f, 200);
         producto4 = new Producto(4, "Pantalon", "Pantalon con Botonesl", 25.50f, 175);
+        
         HashMap<Integer, Producto> productosTienda = new HashMap<>();
 
         productosTienda.put(producto1.getId(), producto1);
         productosTienda.put(producto2.getId(), producto2);
         productosTienda.put(producto3.getId(), producto3);
         tienda = new Tienda(productosTienda);
-        tienda.crearCarrito(1);
-        tienda.crearCarrito(2);
+        carrito1 = new Carrito(1);
+        carrito2 = new Carrito(2);
+        carrito3 = new Carrito(3);
+        tienda.añadirCarrito(carrito1);
+        tienda.añadirCarrito(carrito2);
     }
 
     @Test
@@ -44,7 +51,7 @@ public class TiendaTest {
     }
 
     @Test
-    void testAñadirStock()  {
+    void testAñadirStock() throws Exception  {
         int cantidadAnterior = producto1.getCantidad();
         int cantidadNueva = cantidadAnterior + 50;
         tienda.añadirStock(1, 50);
@@ -53,7 +60,7 @@ public class TiendaTest {
         
     }
     @Test
-    void testListarPorId()  {
+    void testListarPorId() throws Exception  {
         Producto producto = producto1;
         assertEquals(producto, tienda.listarPorId(1));
         producto = producto3;
@@ -62,7 +69,7 @@ public class TiendaTest {
     }
 
     @Test
-    void testListarProductos() {
+    void testListarProductos() throws Exception {
         
             List<Producto> listaEjemplo = new ArrayList<>();
             listaEjemplo.add(producto1);
@@ -76,7 +83,7 @@ public class TiendaTest {
     }
 
     @Test
-    void TestLlenarCarrito()  {
+    void testLlenarCarrito() throws Exception  {
         tienda.llenarCarrito(0,30, producto1.getId());
         assertTrue(producto1.getCantidad() == (100 - 30));
         tienda.llenarCarrito(0,1000, producto2.getId());
@@ -86,7 +93,7 @@ public class TiendaTest {
     }
 
     @Test
-    void TestVaciarCarrito()  {
+    void TestVaciarCarrito() throws Exception  {
         tienda.llenarCarrito(0,30, producto1.getId());
         tienda.llenarCarrito(0,1000, producto2.getId());
         assertTrue(producto1.getCantidad() == (100 - 30));
@@ -98,7 +105,7 @@ public class TiendaTest {
     }
 
     @Test
-    void testVenderProductos() {
+    void testVenderProductos() throws Exception {
         tienda.llenarCarrito(1,20, 1);
         tienda.llenarCarrito(1,49, 2);
         tienda.venderProductos(1);
@@ -108,15 +115,46 @@ public class TiendaTest {
     }
 
     @Test
-    void testVerStockProducto() {
+    void testVerStockProducto() throws Exception {
         assertTrue(tienda.verStockProducto(1) == 100);
     }
 
     @Test
-    void TestCalcularPrecioCompra() {
+    void TestCalcularPrecioCompraCarrito() throws Exception {
         tienda.llenarCarrito(0,20, 1);
         tienda.llenarCarrito(0,49, 2);
-        assertEquals((producto1.getPrecio()*20)+(producto2.getPrecio()*49),tienda.calcularPrecioCompra(0));
+        assertEquals((producto1.getPrecio()*20)+(producto2.getPrecio()*49),tienda.calcularPrecioCompraCarrito(0));
         
     }
+
+    @Test
+    void testAñadirCarrito() {
+        assertTrue(tienda.getCarritos().size()==2);
+        tienda.añadirCarrito(carrito3);
+        assertTrue(tienda.getCarritos().contains(carrito1));
+        assertTrue(tienda.getCarritos().contains(carrito3));
+        assertTrue(tienda.getCarritos().size()==3);
+        
+    } 
+
+    
+
+    @Test
+    void testGetCarrito() {
+        assertEquals(carrito2, tienda.getCarrito(2));
+    }
+
+    @Test
+    void testGetCarritos() {
+        
+        assertTrue(tienda.getCarritos().size()==2);
+        assertTrue(tienda.getCarritos().contains(carrito1)&&tienda.getCarritos().contains(carrito2));
+
+    }
+
+    
+
+    
+
+    
 }

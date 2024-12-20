@@ -38,8 +38,9 @@ $(function () {
                 });
             },
             error: function (error) {
+
                 mostrarError("Error al listar los productos")
-                console.log(error)
+                
             },
             complete: function (data) {
                 $('tbody').on('click', '.botonMaestro.borrar', function (event) {
@@ -49,7 +50,7 @@ $(function () {
                     mostrarModalConfirmacion('Borrar producto', 'Confirmar borrado', () => {
                         borrarProducto(id);
                     });
-                    console.log('Hola desde botonBorrar');
+                    
                 });
 
                 $('tbody').on('click', '.botonMaestro.comprar', function (event) {
@@ -64,7 +65,6 @@ $(function () {
                     
                     event.stopPropagation();
                     var id = $(this).data('id');
-                    console.log('Hola desde boton VerDetalle');
                     verDetalleProducto(id);
                     $('#tituloDetalle').text('Detalles del producto');
                     $('#botonCambios').text('Modificar').off().on('click', function () {
@@ -99,7 +99,7 @@ $(function () {
             },
             error: function (error) {
                 mostrarError("Error al recuperar los datos");
-                console.log(error)
+                
             },
         })
     }
@@ -262,10 +262,14 @@ $(function () {
     function mostrarDetalle (){
         $('.zonaDetalle').show();
         $('button.botonMaestro').prop('disabled', true);
+        $('#refrescar').prop('disabled', true);
+        $('#añadir').prop('disabled', true);
     }
     getProducts()
     
     $('#botonCancelar').on('click', function () {
+        $('#refrescar').prop('disabled', false);
+        $('#añadir').prop('disabled', false);
         refrescar()
     })
     $('#añadir').on('click', function () {

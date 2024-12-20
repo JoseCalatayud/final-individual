@@ -10,9 +10,8 @@ public class Carrito {
     public Carrito (int id) {
         this.id = id;
         this.contenido = new HashMap<>();
-
-
     }
+
     public void setContenido(HashMap<Integer, Integer> contenido) {
         this.contenido = contenido;
     }
@@ -21,17 +20,9 @@ public class Carrito {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public HashMap<Integer, Integer> getContenido() {
         return contenido;
-    }
-
-    
-
-    
+    }   
 
     public void añadirProducto(int idProducto, int cantidad) {
         if (contenido.containsKey(idProducto)) {
