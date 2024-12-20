@@ -29,7 +29,6 @@ public class TiendaTest {
         producto2 = new Producto(2, "Zapatos", "Zapatos deportivos", 49.99f, 50);
         producto3 = new Producto(3, "Gorra", "Gorra de béisbol", 15.50f, 200);
         producto4 = new Producto(4, "Pantalon", "Pantalon con Botonesl", 25.50f, 175);
-        
         HashMap<Integer, Producto> productosTienda = new HashMap<>();
 
         productosTienda.put(producto1.getId(), producto1);
