@@ -209,6 +209,8 @@ $(function () {
     function refrescar() {
         $('.zonaDetalle').hide();
         $('#botonCambios').off()
+        $('#refrescar').prop('disabled', false);
+        $('#añadir').prop('disabled', false);
         getProducts()
     }
 
