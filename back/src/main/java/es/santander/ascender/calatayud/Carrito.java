@@ -31,6 +31,8 @@ public class Carrito {
 
     
 
+    
+
     public void añadirProducto(int idProducto, int cantidad) {
         if (contenido.containsKey(idProducto)) {
             contenido.put(idProducto, contenido.get(idProducto) + cantidad);

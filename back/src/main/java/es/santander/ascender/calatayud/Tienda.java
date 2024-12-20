@@ -108,4 +108,9 @@ public class Tienda {
         return carritos.get(idCarrito);
     }
 
+    public List<Carrito> getCarritos() {
+        return carritos;
+    }
+    
+
 }
