@@ -16,6 +16,9 @@ td.precio {
 .tdBotones {
     text-align: center;
 }
+.tdBotones button:hover{
+    background-color: rgb(253, 174, 54);
+}
 
 th:last-child {
     text-align: right;
